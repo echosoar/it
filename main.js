@@ -3,9 +3,20 @@ const electron = require('electron')
 const path = require('path')
 const url = require('url')
 
+const ipcMain = electron.ipcMain;
+const dialog = electron.dialog;
+
 let { app, BrowserWindow } = electron;
 
 let windowObj = null;
+
+ipcMain.on("openDirectory", function(e, arg){
+	dialog.showOpenDialog({
+		properties: ['openDirectory']
+	}, function(path) {
+		windowObj.webContents.send('openedDirectory', path);
+	});
+});
 
 
 function fun_window() {
